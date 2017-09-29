@@ -19,5 +19,26 @@ namespace LogAn.UnitTests
 
             Assert.False(result);
         }
+
+        [Test]
+        public void IsValidLogFileName_GoodExtensionLowercase_ReturnTrue()
+        {
+            LogAnalyzer analyzer = new LogAnalyzer();
+
+            bool result = analyzer.IsValidLogFileName("abc.slf");
+
+            Assert.True(result);
+        }
+
+
+        [Test]
+        public void IsValidLogFileName_GoodExtensionUppercase_ReturnTrue()
+        {
+            LogAnalyzer analyzer = new LogAnalyzer();
+
+            bool result = analyzer.IsValidLogFileName("abc.SLF");
+
+            Assert.True(result);
+        }
     }
 }
