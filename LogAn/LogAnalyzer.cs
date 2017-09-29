@@ -8,6 +8,19 @@ namespace LogAn
 {
     public class LogAnalyzer
     {
+        private IFileExtensionManager manager;
+
+        public LogAnalyzer()
+        {
+
+        }
+
+        public LogAnalyzer(IFileExtensionManager manager)
+        {
+            this.manager = manager;
+        }
+
+
         public bool WasLastFileNameValid { get; set; }
 
         public bool IsValidLogFileName(string fileName)
@@ -26,6 +39,12 @@ namespace LogAn
 
             WasLastFileNameValid = true;
             return true;
+        }
+
+
+        public bool IsValidLogFileNameFromExternal(string fileName)
+        {
+            return manager.IsValid(fileName);
         }
     }
 }
