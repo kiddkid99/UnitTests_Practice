@@ -10,12 +10,14 @@ namespace LogAn.UnitTests
     [TestFixture]
     public class LogAnalyzerTests
     {
-        [Test]
-        public void IsValidLogFileName_BadExtenstion_ReturnFalse()
+ 
+        [TestCase("abc.foo")]
+        [TestCase("abc.123")]
+        public void IsValidLogFileName_InvalidExtensions_ReturnFalse(string fileName)
         {
             LogAnalyzer analyzer = new LogAnalyzer();
 
-            bool result = analyzer.IsValidLogFileName("abc.foo");
+            bool result = analyzer.IsValidLogFileName(fileName);
 
             Assert.False(result);
         }
@@ -29,6 +31,16 @@ namespace LogAn.UnitTests
             bool result = analyzer.IsValidLogFileName(fileName);
 
             Assert.True(result);
+        }
+
+        [Test]
+        public void IsValidLogFileName_EmptyFileName_ThrowsException()
+        {
+            LogAnalyzer analyzer = new LogAnalyzer();
+
+            var ex = Assert.Catch<Exception>(() => analyzer.IsValidLogFileName(""));
+
+            StringAssert.Contains("filename has to be provided", ex.Message);
         }
     }
 }
