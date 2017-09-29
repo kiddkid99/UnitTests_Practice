@@ -65,6 +65,7 @@ namespace LogAn.UnitTests
 
 
         [Test]
+        [Category("Fast Tests")]
         public void IsValidLogFileNameFromExternal_NameSupportedExtension_ReturnTrue()
         {
             AlwaysValidFakeExtensionManager manager = new AlwaysValidFakeExtensionManager();
@@ -76,14 +77,34 @@ namespace LogAn.UnitTests
             Assert.True(result);
 
         }
+
+
+        [Test]
+        [Category("Fast Tests")]
+        public void IsValidLogFileNameFromExternal_ExtManagerThrowsException_ReturnFalse()
+        {
+            AlwaysValidFakeExtensionManager manager = new AlwaysValidFakeExtensionManager();
+            manager.WillThrow = new Exception("this is fake.");
+
+            LogAnalyzer log = new LogAnalyzer(manager);
+
+            bool result = log.IsValidLogFileNameFromExternal("blahblah.ext");
+            Assert.False(result);
+        }
     }
 
     internal class AlwaysValidFakeExtensionManager : IFileExtensionManager
     {
         public bool WillBeValid = false;
+        public Exception WillThrow = null;
 
         public bool IsValid(string fileName)
         {
+            if(WillThrow != null)
+            {
+                throw WillThrow;
+            }
+
             return WillBeValid;
         }
     }

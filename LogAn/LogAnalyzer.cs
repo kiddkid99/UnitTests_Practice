@@ -44,7 +44,15 @@ namespace LogAn
 
         public bool IsValidLogFileNameFromExternal(string fileName)
         {
-            return manager.IsValid(fileName);
+            try
+            {
+                return manager.IsValid(fileName);
+            }
+            catch
+            {
+                return false;
+            }
+           
         }
     }
 }
