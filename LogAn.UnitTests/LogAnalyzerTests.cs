@@ -17,6 +17,7 @@ namespace LogAn.UnitTests
         
         [TestCase("abc.foo")]
         [TestCase("abc.123")]
+        [Category("Fast Tests")]
         public void IsValidLogFileName_InvalidExtensions_ReturnFalse(string fileName)
         {
             LogAnalyzer analyzer = MakeLogAnalyzer();
@@ -28,6 +29,7 @@ namespace LogAn.UnitTests
 
         [TestCase("abc.slf")]
         [TestCase("abc.SLF")]
+        [Category("Fast Tests")]
         public void IsValidLogFileName_ValidExtensions_ReturnTrue(string fileName)
         {
             LogAnalyzer analyzer = MakeLogAnalyzer();
@@ -38,6 +40,7 @@ namespace LogAn.UnitTests
         }
 
         [Test]
+        [Category("Fast Tests")]
         public void IsValidLogFileName_EmptyFileName_ThrowsException()
         {
             LogAnalyzer analyzer = MakeLogAnalyzer();
