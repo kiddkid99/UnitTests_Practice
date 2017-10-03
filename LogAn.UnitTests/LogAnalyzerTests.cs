@@ -115,12 +115,32 @@ namespace LogAn.UnitTests
         public void Analyze_TooShortFileName_CallWebService()
         {
             FakeWebService mockService = new FakeWebService();
-            LogAnalyzer log = new LogAnalyzer(mockService);
+            LogAnalyzer log = new LogAnalyzer();
+            log.Service = mockService;
             string tooShortFileName = "abc.ext";
 
             log.Analyze(tooShortFileName);
 
             StringAssert.Contains("File name too short: abc.ext", mockService.LastError);
+
+        }
+
+
+        [Test]
+        public void Analyze_WebServiceThrows_SendsEmail()
+        {
+            FakeWebService stubWebService = new FakeWebService();
+            stubWebService.ToThrow = new Exception("fake exception");
+
+            FakeEmailService mockEmail = new FakeEmailService();
+
+            LogAnalyzer log = new LogAnalyzer(stubWebService, mockEmail);
+            string tooShortFilaName = "abc.ext";
+            log.Analyze(tooShortFilaName);
+
+            StringAssert.Contains("someone@somewhere.com", mockEmail.To);
+            StringAssert.Contains("fake exception", mockEmail.Body);
+            StringAssert.Contains("can't log", mockEmail.Subject);
 
         }
     }
@@ -158,11 +178,31 @@ namespace LogAn.UnitTests
 
     internal class FakeWebService : IWebService
     {
+        public Exception ToThrow;
         public string LastError;
 
         public void LogError(string message)
         {
+            if(ToThrow != null)
+            {
+                throw ToThrow;
+            }
+
             LastError = message;
+        }
+    }
+
+    internal class FakeEmailService : IEmailService
+    {
+        public string To;
+        public string Subject;
+        public string Body;
+
+        public void SendEmail(string to, string subject, string body)
+        {
+            To = to;
+            Subject = subject;
+            Body = body;
         }
     }
 }

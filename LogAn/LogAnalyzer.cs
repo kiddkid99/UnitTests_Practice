@@ -1,15 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LogAn
 {
     public class LogAnalyzer
     {
         private IFileExtensionManager manager;
-        private IWebService service;
+
+        public IWebService Service
+        {
+            get;set;
+        }
+
+        public IEmailService Email
+        {
+            get;set;
+        }
+
 
         public LogAnalyzer()
         {
@@ -21,9 +27,10 @@ namespace LogAn
             this.manager = manager;
         }
 
-        public LogAnalyzer(IWebService service)
+        public LogAnalyzer(IWebService service, IEmailService email)
         {
-            this.service = service;
+            this.Service = service;
+            this.Email = email;
         }
 
 
@@ -66,7 +73,15 @@ namespace LogAn
         {
             if(fileName.Length < 8)
             {
-                service.LogError("File name too short: " + fileName);
+                try
+                {
+                    Service.LogError("File name too short: " + fileName);
+                }
+                catch(Exception e)
+                {
+                    Email.SendEmail("someone@somewhere.com", "can't log", e.Message);
+                }
+              
             }
         }
     }
