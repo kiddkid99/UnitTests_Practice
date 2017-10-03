@@ -43,6 +43,7 @@
     <Compile Include="FileExtensionManager.cs" />
     <Compile Include="IFileExtensionManager.cs" />
     <Compile Include="LogAnalyzer.cs" />
+    <Compile Include="LogAnalyzerUsingFactoryMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

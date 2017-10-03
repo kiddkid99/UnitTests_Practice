@@ -91,6 +91,39 @@ namespace LogAn.UnitTests
             bool result = log.IsValidLogFileNameFromExternal("blahblah.ext");
             Assert.False(result);
         }
+
+
+        [Test]
+        [Category("Fast Tests")]
+        public void overrideTest()
+        {
+            AlwaysValidFakeExtensionManager stub = new AlwaysValidFakeExtensionManager();
+            stub.WillBeValid = true;
+
+            TestableLogAnalyzer logan = new TestableLogAnalyzer(stub);
+
+            bool result = logan.IsValidLogFileName("file.ext");
+
+            Assert.True(result);
+
+
+
+        }
+    }
+
+    class TestableLogAnalyzer : LogAnalyzerUsingFactoryMethod
+    {
+        public IFileExtensionManager Manager;
+
+        public TestableLogAnalyzer(IFileExtensionManager manager)
+        {
+            this.Manager = manager;
+        }
+
+        public override IFileExtensionManager GetManager()
+        {
+            return Manager;
+        }
     }
 
     internal class AlwaysValidFakeExtensionManager : IFileExtensionManager
