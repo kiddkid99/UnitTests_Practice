@@ -9,6 +9,7 @@ namespace LogAn
     public class LogAnalyzer
     {
         private IFileExtensionManager manager;
+        private IWebService service;
 
         public LogAnalyzer()
         {
@@ -18,6 +19,11 @@ namespace LogAn
         public LogAnalyzer(IFileExtensionManager manager)
         {
             this.manager = manager;
+        }
+
+        public LogAnalyzer(IWebService service)
+        {
+            this.service = service;
         }
 
 
@@ -53,6 +59,15 @@ namespace LogAn
                 return false;
             }
            
+        }
+
+
+        public void Analyze(string fileName)
+        {
+            if(fileName.Length < 8)
+            {
+                service.LogError("File name too short: " + fileName);
+            }
         }
     }
 }
