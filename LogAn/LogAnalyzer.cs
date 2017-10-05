@@ -8,26 +8,31 @@ namespace LogAn
 
         public IWebService Service
         {
-            get;set;
+            get; set;
         }
 
         public IEmailService Email
         {
-            get;set;
+            get; set;
+        }
+
+        public int MinNameLength
+        {
+            get; set;
         }
 
 
         public LogAnalyzer()
         {
-
+            MinNameLength = 8;
         }
 
-        public LogAnalyzer(IFileExtensionManager manager)
+        public LogAnalyzer(IFileExtensionManager manager) : this()
         {
             this.manager = manager;
         }
 
-        public LogAnalyzer(IWebService service, IEmailService email)
+        public LogAnalyzer(IWebService service, IEmailService email) : this()
         {
             this.Service = service;
             this.Email = email;
@@ -40,12 +45,12 @@ namespace LogAn
         {
             WasLastFileNameValid = false;
 
-            if(String.IsNullOrEmpty(fileName))
+            if (String.IsNullOrEmpty(fileName))
             {
                 throw new ArgumentException("filename has to be provided.");
             }
 
-            if(!fileName.EndsWith(".SLF", StringComparison.CurrentCultureIgnoreCase))
+            if (!fileName.EndsWith(".SLF", StringComparison.CurrentCultureIgnoreCase))
             {
                 return false;
             }
@@ -65,23 +70,23 @@ namespace LogAn
             {
                 return false;
             }
-           
+
         }
 
 
         public void Analyze(string fileName)
         {
-            if(fileName.Length < 8)
+            if (fileName.Length < MinNameLength)
             {
                 try
                 {
                     Service.LogError("File name too short: " + fileName);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Email.SendEmail("someone@somewhere.com", "can't log", e.Message);
                 }
-              
+
             }
         }
     }

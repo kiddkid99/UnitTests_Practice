@@ -120,6 +120,7 @@ namespace LogAn.UnitTests
             string tooShortFileName = "abc.ext";
 
             log.Analyze(tooShortFileName);
+            
 
             StringAssert.Contains("File name too short: abc.ext", mockService.LastError);
 
