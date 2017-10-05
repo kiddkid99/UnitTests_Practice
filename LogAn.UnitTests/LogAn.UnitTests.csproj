@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IFileExtensionManagerTests.cs" />
     <Compile Include="LogAnalyzerTests.cs" />
     <Compile Include="LogAnalyzerTests2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

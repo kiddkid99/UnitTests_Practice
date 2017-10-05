@@ -4,6 +4,7 @@ using NUnit.Framework;
 namespace LogAn.UnitTests
 {
     [TestFixture]
+    [Category("NSub")]
     public class LogAnalyzerTests2
     {
         [Test]
